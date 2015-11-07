@@ -15,12 +15,18 @@
       });
 
       function preload () {
-        game.load.image('logo', 'assets/phaser.png');
+        game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
       }
 
       function create () {
-        var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-        logo.anchor.setTo(0.5, 0.5);
+        var player = game.add.sprite(game.world.centerX, game.world.centerY, 'sabrewulf');
+
+        player.anchor.setTo(0.5, 0.5);
+
+        player.animations.add('walk');
+
+        player.animations.play('walk', 10, true);
+
       }
     };
   </script>
