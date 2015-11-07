@@ -1,0 +1,23 @@
+{
+  "name": "typer-instinct",
+  "version": "1.0.0",
+  "description": "FIGHT",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "1.6.2",
+    "http-server": "0.8.5",
+    "phaser": "2.4.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagobrandam/Typer-Instinct.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thiagobrandam/Typer-Instinct/issues"
+  },
+  "homepage": "https://github.com/thiagobrandam/Typer-Instinct#readme",
+  "private": true
+}
