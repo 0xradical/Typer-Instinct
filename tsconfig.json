@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "out": "build/game.js",
-    "target": "ES5",
-    "modules": true
+    "target": "ES5"
   },
   "exclude": [
       "node_modules",
