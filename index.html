@@ -10,16 +10,22 @@
 <body>
   <script type="text/javascript">
     window.onload = function() {
-      var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
+      var game = new Phaser.Game(512, 223, Phaser.AUTO, '', {
         preload: preload, create: create
       });
 
       function preload () {
         game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
+
+        game.load.spritesheet('background', 'assets/background.png');
       }
 
       function create () {
-        var player = game.add.sprite(game.world.centerX, game.world.centerY, 'sabrewulf');
+        game.add.sprite(0, 0, 'background');
+
+        // var player = game.add.sprite(game.world.centerX, game.world.centerY, 'sabrewulf');
+
+        var player = game.add.sprite(80, 150, 'sabrewulf');
 
         player.anchor.setTo(0.5, 0.5);
 
