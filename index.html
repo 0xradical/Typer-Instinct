@@ -50,10 +50,15 @@
         ground.body.velocity.x = 0;
         ground.body.velocity.y = 0;
 
+        player.animations.add('walk');
+
       }
 
       function update() {
         game.physics.arcade.collide(player, ground);
+
+        player.animations.play('walk', 10, true);
+        // game.physics.arcade.moveToXY(player, 10, 10);
       }
 
       function render(){
