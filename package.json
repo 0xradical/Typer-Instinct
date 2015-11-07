@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "FIGHT",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "core-js": "1.2.5",
+    "phaser": "2.4.4"
+  },
   "devDependencies": {
     "typescript": "1.6.2",
-    "http-server": "0.8.5",
-    "phaser": "2.4.4"
+    "http-server": "0.8.5"
   },
   "repository": {
     "type": "git",
