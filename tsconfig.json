@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "out": "build/game.js"
+  },
+  "exclude": [
+      "node_modules",
+      "bin",
+      "assets"
+  ]
+}
