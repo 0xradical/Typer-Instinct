@@ -10,29 +10,54 @@
 <body>
   <script type="text/javascript">
     window.onload = function() {
+      var ground;
+      var player;
       var game = new Phaser.Game(512, 223, Phaser.AUTO, '', {
-        preload: preload, create: create
+        preload: preload, create: create, update: update, render: render
       });
 
       function preload () {
         game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
 
         game.load.spritesheet('background', 'assets/background.png');
+        game.load.spritesheet('ground', 'assets/ground.png');
       }
 
       function create () {
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+
         game.add.sprite(0, 0, 'background');
 
-        // var player = game.add.sprite(game.world.centerX, game.world.centerY, 'sabrewulf');
+        ground = game.add.sprite(0, 200, 'ground');
 
-        var player = game.add.sprite(80, 150, 'sabrewulf');
+        player = game.add.sprite(50, 50, 'sabrewulf');
 
-        player.anchor.setTo(0.5, 0.5);
+        game.physics.arcade.enable(player);
+        game.physics.arcade.enable(ground);
 
-        player.animations.add('walk');
+        player.body.gravity.y = 2000;
+        player.body.drag.x = 1700;
 
-        player.animations.play('walk', 10, true);
+        player.body.velocity.x = 0;
+        player.body.velocity.y = 0;
 
+        ground.enableBody = true;
+        ground.body.moves = false;
+        ground.body.immovable = true;
+        ground.allowGravity = false;
+        ground.body.gravity.x = 0;
+        ground.body.gravity.y = 0;
+        ground.body.velocity.x = 0;
+        ground.body.velocity.y = 0;
+
+      }
+
+      function update() {
+        game.physics.arcade.collide(player, ground);
+      }
+
+      function render(){
+        // game.debug.bodyInfo(ground, 0, 0);
       }
     };
   </script>
