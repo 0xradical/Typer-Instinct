@@ -37,6 +37,10 @@ class StringMatcher {
     }
   }
 
+  static setupWord(obj: StringMatcher, key: string) {
+    obj.setupWord(key);
+  }
+
   setupWord(key: string) {
     this.currentCommandStrings[key] = this.getRandomWord();
     this.currentMatchLevels[key] = 0.0;
@@ -70,11 +74,10 @@ class StringMatcher {
       if (matchLevel == 1.0) {
         success = true;
         this.commandCompleted(key);
-        this.setupWord(key);
+        setTimeout(StringMatcher.setupWord, 100, this, key);
         this.setInputText('');
       }
     }
-
     console.log(this.currentMatchLevels);
 
     return success;

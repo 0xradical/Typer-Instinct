@@ -108,6 +108,7 @@ class Game {
                     e.preventDefault();
                     this.buffer.pop();
                     this.local.bufferText = this.buffer.join('');
+                    this.player.matcher.updateTypingField(this.local.bufferText);
                     this.local.presenter.updateInput();
                 }
             });
@@ -166,6 +167,9 @@ class Game {
             // jump: 28000
             this._playerSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
 
+            // punch
+            this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
+
             // crouch: 11000
             this._playerSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 5, '', 3), 23, false, false);
 
@@ -181,6 +185,7 @@ class Game {
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
             //this.remote = this.initRemote();
+            this._playerSprite.play('wait');
         }
     }
 
@@ -211,12 +216,13 @@ class Game {
         let style = { font: "32px Courier New", fill: "#ff0000" };
         for (let key in Fighting.COMMANDS) {
             texts[key] = this.game.add.text(200, 20 + 40 * idx, '', style);
-            texts[key].strokeThickness = 16;
+            texts[key].strokeThickness = 10;
             labels[key] =this.game.add.text(10, 20 + 40 * idx, key, style);
-            labels[key].strokeThickness = 16;
+            labels[key].strokeThickness = 10;
             idx++;
         }
-        texts['input'] = this.game.add.text(10, 320, '', style);
+        let inputStyle = { font: "32px Courier New", fill: "#00ff00" };
+        texts['input'] = this.game.add.text(10, 320, '', inputStyle);
         local.texts = texts;
         local.labels = labels;
 

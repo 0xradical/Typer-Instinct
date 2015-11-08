@@ -13,9 +13,17 @@ module WordPresenter {
 
         updateMenu() {
             let player = this.playerState.player;
-            let toOutput: { [key: string]: string } = player.matcher.currentCommandStrings;
+            let toOutput:    { [key: string]: string }  = player.matcher.currentCommandStrings;
+            let matchLevels: { [key: string]: number }  = player.matcher.currentMatchLevels;
             for (let key in toOutput) {
                 this.playerState.texts[key].setText(toOutput[key]);
+                if (matchLevels[key] != 0.0) {
+                    this.playerState.texts[key].clearColors()
+                    this.playerState.texts[key].addColor('#00ff00', 0);
+                    this.playerState.texts[key].addColor('#ff0000', matchLevels[key] * toOutput[key].length);
+                } else {
+                    this.playerState.texts[key].clearColors()
+                }
             }
         }
 
