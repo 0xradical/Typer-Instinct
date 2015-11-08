@@ -31,6 +31,10 @@ class Game {
     finished: boolean = false;
     buffer: string[] = [];
 
+    private _playerSprite: Phaser.Sprite;
+    private _groundSprite: Phaser.Sprite;
+    private _opponentSprite: Phaser.Sprite;
+
     constructor(playerName: string) {
         this.player = new Fighting.Player(playerName, {
             onDamage: (value) => {
@@ -38,6 +42,8 @@ class Game {
             },
             onDeath: (player) => {
                 this.finished = true;
+            },
+            onAnimate: (state) => {
             }
         });
         this.player.matcher = new StringMatcher();
@@ -55,7 +61,8 @@ class Game {
     get preload(): StateFunction {
         return () => {
             this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
-            this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 30);
+            this.game.load.spritesheet('ground', 'assets/ground2.png', 1024, 60);
+            this.game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
             this.game.load.bitmapFont('mainFont', 'assets/font.png', 'assets/font.fnt');
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
@@ -90,7 +97,28 @@ class Game {
 
     get create(): StateFunction {
         return () => {
+            this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.add.sprite(150, 0, 'background');
+
+            this._groundSprite = this.game.add.sprite(200, 360, 'ground');
+            this._playerSprite = this.game.add.sprite(650, 50, 'sabrewulf');
+
+            this.game.physics.arcade.enable(this._playerSprite);
+            this.game.physics.arcade.enable(this._groundSprite);
+
+            this._playerSprite.body.gravity.y = 2000;
+            this._playerSprite.body.drag.x = 1700;
+
+            this._playerSprite.body.velocity.x = 0;
+            this._playerSprite.body.velocity.y = 0;
+
+            this._groundSprite.body.moves = false;
+            this._groundSprite.body.immovable = true;
+            this._groundSprite.body.gravity.x = 0;
+            this._groundSprite.body.gravity.y = 0;
+            this._groundSprite.body.velocity.x = 0;
+            this._groundSprite.body.velocity.y = 0;
+
             this.local = this.initLocal(this.player);
             //this.remote = this.initRemote();
         }
@@ -98,6 +126,7 @@ class Game {
 
     get update(): StateFunction {
         return () => {
+            this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
             this.player.tick();
             this.local.presenter.update();
             //this.remote.presenter.update();
