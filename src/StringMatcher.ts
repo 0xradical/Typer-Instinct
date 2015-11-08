@@ -12,8 +12,6 @@ interface HTMLElement {
   value: any;
 }
 
-
-
 class StringMatcher {
   static ALLOWED_COMMANDS = [
     'punch',
