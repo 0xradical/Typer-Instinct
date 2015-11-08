@@ -74,6 +74,9 @@ class Game {
                 }
             }
         });
+
+        this.player.opponent = this.player;
+
         this.opponent = new Fighting.Player('Oponente', {
             onDamage: (value) => {
                 // noop
@@ -161,6 +164,9 @@ class Game {
 
             // jump: 28000
             this._playerSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
+
+            // punch
+            this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
 
             // crouch: 11000
             this._playerSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 5, '', 3), 23, false, false);
