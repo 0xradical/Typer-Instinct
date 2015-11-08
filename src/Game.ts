@@ -63,7 +63,9 @@ class Game {
         return () => {
             this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
             this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 60);
-            this.game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
+            this.game.load.atlas('sabrewulf', 'assets/sabrewulf_trans.png', 'assets/sabrewulf.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+            // this.game.load.atlasJSONHash('sabrewulf', 'assets/sabrewulf.png', 'assets/sabrewulf.json');
+            // this.game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
                 if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
