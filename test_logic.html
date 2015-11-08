@@ -13,6 +13,7 @@
     window.onload = function() {
       window.blah = 'arst';
       // setInterval(function() { window.blah = (new StringMatcher()).getRandomWord(); }, 1000);
+      window.matcher = new StringMatcher();
       Game.run("Hueho");
     };
 
@@ -31,13 +32,11 @@
   <input type='text' name='player-input' id='player-input' oninput='updateMatchLevelsFromInput()' onchange='handleUserSubmission()'>
   <script type="text/javascript">
     function updateMatchLevelsFromInput() {
-      var matcher = new StringMatcher();
-      matcher.updateMatchLevelsFromInput();
+      window.matcher.updateMatchLevelsFromInput();
     }
 
     function handleUserSubmission() {
-      var matcher = new StringMatcher();
-      matcher.handleUserSubmission();
+      window.matcher.handleUserSubmission();
     }
   </script>
 </body>
