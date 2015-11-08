@@ -70,6 +70,7 @@ class Game {
                         this._playerSprite.play('special');
                         break;
                     default:
+                        break;
                 }
             }
         });
@@ -105,8 +106,11 @@ class Game {
                         this._playerSprite.play('special');
                         break;
                     default:
+                        break;
+                }
             }
         });
+
         this.player.opponent = this.opponent;
 
         // network, meet mister game
