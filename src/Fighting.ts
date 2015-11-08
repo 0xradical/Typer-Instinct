@@ -4,6 +4,10 @@
 module Fighting {
     const NOOP = (..._) => { };
 
+    export interface StringMatcher { 
+        run(text: String); 
+        commandStrings: { [key: string]: string };
+    }
     export interface DamageListener { (currentLife: number); }
     export interface DeathListener { (dead: Player); }
 
@@ -130,6 +134,7 @@ module Fighting {
         private _lifeBar: LifeBar;
         private _state: State;
         private _ticks: number;
+        private _matcher: StringMatcher;
 
         constructor(private _name: string, callbacks?: {
             onDamage?: DamageListener, onDeath?: DeathListener
@@ -141,6 +146,7 @@ module Fighting {
         get name(): string { return this._name; }
         get state(): State { return this._state; }
         get ticks(): number { return this._ticks; }
+        get matcher(): StringMatcher { return this._matcher; }
         get commandMap(): CommandMap { return this._commandMap; }
 
         get opponent(): Player { return this._opponent; }
