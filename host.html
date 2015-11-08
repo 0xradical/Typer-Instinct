@@ -10,12 +10,16 @@
 </head>
 <body>
   <script type="text/javascript">
+    function initGame() {
+      Game.run("Roger", window.network)
+    }
+
     window.onload = function() {
       // window.blah = 'arst';
       // setInterval(function() { window.blah = (new StringMatcher()).getRandomWord(); }, 1000);
       // window.matcher = new StringMatcher();
-      var network = new Network.Manager();
-      network.host(function(){ Game.run("Roger", network) });
+      window.network = new Network.Manager();
+      network.host(initGame);
       // Game.run("Hueho");
     };
 

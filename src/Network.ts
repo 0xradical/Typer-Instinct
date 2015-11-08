@@ -1,6 +1,10 @@
 /// <reference path="../lib/typings/core-js.d.ts" />
 /// <reference path="../lib/typings/peerjs.d.ts" />
 
+interface Window {
+    game: any;
+}
+
 module Network {
   const API_KEY = '3c8e8hl4a8xgvi';
 
@@ -10,6 +14,7 @@ module Network {
 
     conn: PeerJs.DataConnection;
     peer: PeerJs.Peer;
+    game: Game;
     lastSentTimestamp: number;
 
     constructor() {
@@ -27,7 +32,7 @@ module Network {
         reliable: true
       });
 
-      this.conn.on('data', this.onReceive);
+      this.conn.on('data', this.onReceive.bind(this));
       callback();
     }
 
@@ -36,14 +41,20 @@ module Network {
 
       this.peer.on('connection', (conn) => {
         this.conn = conn;
-        this.conn.on('data', this.onReceive);
+        this.conn.on('data', this.onReceive.bind(this));
         callback();
       });
     }
 
     onReceive(data: any) {
-        console.log(data);
-        // magic here
+      if(!this.game) {
+        console.log('NETWORK SEM GAME');
+        this.game = window.game;
+        // return;
+      }
+      console.log(data);
+      let opponentState = data.opponentState;
+      this.game.loadOpponentState(data.playerState);
     }
 
     appendAction(action: any) {
@@ -53,8 +64,8 @@ module Network {
     sendState(playerState: any, globalState: any = null) {
       var msg = {
         controls: this.buffer,
-        playerState: null,
-        globalState: null
+        playerState: playerState,
+        globalState: ''
       }
 
       if(this.isHost && globalState != null) {

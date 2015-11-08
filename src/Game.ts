@@ -27,6 +27,7 @@ class Game {
     local: PlayerState;
     remote: PlayerState;
     network: Network.Manager;
+    turn: number = 1;
 
     game: Phaser.Game = null;
 
@@ -87,7 +88,12 @@ class Game {
         });
         this.player.opponent = this.opponent;
 
+        // network, meet mister game
+        // mister game, this is miss network
         this.network = network;
+        this.network.game = this;
+        console.log('THERE SHOULD BE A GAME HERE:');
+        console.log(this.network.game);
 
         this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
@@ -219,9 +225,12 @@ class Game {
 
     get update(): StateFunction {
         return () => {
+            this.turn++;
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
             this.player.tick();
-            this.sendToNetwork();
+            if(this.turn % 10 == 0) {
+                this.sendToNetwork();
+            }
             this.local.presenter.update();
             this.remote.presenter.update();
         }
@@ -231,6 +240,14 @@ class Game {
         return () => {
             // game.debug.bodyInfo(ground, 0, 0);
         }
+    }
+
+    loadOpponentState(state: any) {
+        console.log(state);
+        this.opponent.matcher.currentCommandStrings = state.currentCommandStrings;
+        this.opponent.matcher.currentMatchLevels = state.currentMatchLevels;
+        // this.opponent.matcher.typingField = state.typingField;
+        this.opponent.matcher.updateTypingField(state.typingField);
     }
 
     private initLocal(player: Fighting.Player): PlayerState {
@@ -284,16 +301,15 @@ class Game {
     }
 
     private sendToNetwork() {
-        return;
         if (!this.network) {
             console.log('SEM NETWORK');
             return;
         }
 
         let playerState = {
-            currentCommandStrings: {},
-            currentMatchLevels: {},
-            typingField: 'arst'
+            currentCommandStrings: this.player.matcher.currentCommandStrings,
+            currentMatchLevels: this.player.matcher.currentMatchLevels,
+            typingField: this.player.matcher.typingField
         };
         this.network.sendState(playerState);
     }

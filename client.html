@@ -10,9 +10,14 @@
 </head>
 <body>
   <script type="text/javascript">
+    function initGame() {
+      Game.run("Hueho", window.network)
+    }
+
+
     function readHostId() {
       hostId = prompt('Enter host ID:');
-      window.network.client(hostId, function(){ Game.run("Hueho", window.network) });
+      window.network.client(hostId, initGame);
     }
 
     window.onload = function() {
