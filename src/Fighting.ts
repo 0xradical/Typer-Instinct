@@ -4,12 +4,13 @@
 module Fighting {
     const NOOP = (..._) => { };
 
-    export interface StringMatcher { 
-        updateTypingField(content: String); 
+    export interface StringMatcher {
+        updateTypingField(content: String);
         currentCommandStrings: { [key: string]: string };
     }
     export interface DamageListener { (currentLife: number); }
     export interface DeathListener { (dead: Player); }
+    export interface AnimateListener { (state: State, options?: any); }
 
     export class LifeBar {
         private percentage: number = 100;
@@ -135,10 +136,13 @@ module Fighting {
         private _state: State;
         private _ticks: number;
         private _matcher: StringMatcher;
+        private _onAnimate: AnimateListener;
 
         constructor(private _name: string, callbacks?: {
-            onDamage?: DamageListener, onDeath?: DeathListener
+            onDamage?: DamageListener, onDeath?: DeathListener,
+            onAnimate?: AnimateListener
         }) {
+            this._onAnimate = callbacks.onAnimate || NOOP;
             this._lifeBar = new LifeBar(this, callbacks.onDamage || NOOP,
                 callbacks.onDeath || NOOP);
         }
@@ -169,7 +173,7 @@ module Fighting {
             return this._ticks;
         }
 
-        animate(..._) { }
+        get animate(): AnimateListener { return this._onAnimate; }
 
         execute(key: string) { this._commandMap.get(key).trigger() }
         damageBy(percentage: number) { this._lifeBar.damageBy(percentage) }
