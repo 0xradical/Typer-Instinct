@@ -172,33 +172,38 @@ class Game {
 
     get create(): StateFunction {
         return () => {
-            let [playerSprintName, opponentSpriteName] = this.network.isHost ?
-                ['sabrewulf', 'jago'] : ['jago', 'sabrewulf'];
-
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.add.sprite(150, 0, 'background');
 
-            this._groundSprite = this.game.add.sprite(150, 400, 'ground');
-            this._playerSprite = this.game.add.sprite(WIDTH / 2 - 190, 50,
-                playerSprintName, '0000');
-            this._opponentSprite = this.game.add.sprite(WIDTH / 2 + 40, 50,
-                opponentSpriteName, '0000');
+            let [wulfPos, jagoPos] = this.network.isHost
+                ? [WIDTH / 2 - 190, WIDTH / 2 + 40]
+                : [WIDTH / 2 + 40, WIDTH / 2 - 190]
+            let wulfSprite = this.game.add.sprite(wulfPos, 50, 'sabrewulf', '0000');
+            let jagoSprite = this.game.add.sprite(jagoPos, 50, 'jago', '0000');
 
-            this.game.physics.arcade.enable(this._playerSprite);
-            this.game.physics.arcade.enable(this._opponentSprite);
+            this._groundSprite = this.game.add.sprite(150, 400, 'ground');
+
+            this.game.physics.arcade.enable(wulfSprite);
+            this.game.physics.arcade.enable(jagoSprite);
             this.game.physics.arcade.enable(this._groundSprite);
 
-            this._playerSprite.body.gravity.y = 2000;
-            this._playerSprite.body.drag.x = 1700;
-            this._playerSprite.body.velocity.x = 0;
-            this._playerSprite.body.velocity.y = 0;
+            wulfSprite.body.gravity.y = 2000;
+            wulfSprite.body.drag.x = 1700;
+            wulfSprite.body.velocity.x = 0;
+            wulfSprite.body.velocity.y = 0;
+            if(!this.network.isHost) {
+                wulfSprite.anchor.setTo(0.5, 1);
+                wulfSprite.scale.x = -1;
+            }
 
-            this._opponentSprite.body.gravity.y = 2000;
-            this._opponentSprite.body.drag.x = 1700;
-            this._opponentSprite.body.velocity.x = 0;
-            this._opponentSprite.body.velocity.y = 0;
-            this._opponentSprite.anchor.setTo(0.5, 1);
-            this._opponentSprite.scale.x = -1;
+            jagoSprite.body.gravity.y = 2000;
+            jagoSprite.body.drag.x = 1700;
+            jagoSprite.body.velocity.x = 0;
+            jagoSprite.body.velocity.y = 0;
+            if(this.network.isHost) {
+                jagoSprite.anchor.setTo(0.5, 1);
+                jagoSprite.scale.x = -1;
+            }
 
             this._groundSprite.body.moves = false;
             this._groundSprite.body.immovable = true;
@@ -208,45 +213,53 @@ class Game {
             this._groundSprite.body.velocity.y = 0;
 
             // add(name, frames, frameRate, loop, useNumericIndex)
-            this._playerSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 9, '', 2), 23, true, false);
-            this._opponentSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 10, '', 2), 23, true, false);
+            wulfSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 9, '', 2), 23, true, false);
+            jagoSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 10, '', 2), 23, true, false);
 
             // jump: 28000
-            this._playerSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
-            this._opponentSprite.animations.add('jump', Phaser.Animation.generateFrameNames('13', 0, 32, '', 3), 23, false, false);
+            wulfSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
+            jagoSprite.animations.add('jump', Phaser.Animation.generateFrameNames('13', 0, 32, '', 3), 23, false, false);
 
             // punch
-            this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 15, false, false);
-            this._opponentSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
+            wulfSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 15, false, false);
+            jagoSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
 
             // crouch: 11000
-            this._playerSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 10, '', 3), 23, false, false);
-            this._opponentSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('10', 0, 10, '', 3), 23, false, false);
+            wulfSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 10, '', 3), 23, false, false);
+            jagoSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('10', 0, 10, '', 3), 23, false, false);
 
             // kick: 35000
-            this._playerSprite.animations.add('kick', Phaser.Animation.generateFrameNames('35', 0, 17, '', 3), 23, false, false);
-            this._opponentSprite.animations.add('kick', Phaser.Animation.generateFrameNames('17', 0, 19, '', 3), 23, false, false);
+            wulfSprite.animations.add('kick', Phaser.Animation.generateFrameNames('35', 0, 17, '', 3), 23, false, false);
+            jagoSprite.animations.add('kick', Phaser.Animation.generateFrameNames('17', 0, 19, '', 3), 23, false, false);
 
             // block: 192000
-            this._playerSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 10, '', 3), 15, false, false);
-            this._opponentSprite.animations.add('block', Phaser.Animation.generateFrameNames('59', 0, 6, '', 3), 23, false, false);
+            wulfSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 10, '', 3), 15, false, false);
+            jagoSprite.animations.add('block', Phaser.Animation.generateFrameNames('59', 0, 6, '', 3), 23, false, false);
 
             // special: 67000
-            this._playerSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
-            this._opponentSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 16, '', 3), 23, false, false);
+            wulfSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
+            jagoSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 16, '', 3), 23, false, false);
 
-            this._playerSprite.events.onAnimationComplete.add(function(){
-                this._playerSprite.animations.play('wait');
+            wulfSprite.events.onAnimationComplete.add(function(){
+                wulfSprite.animations.play('wait');
             }, this);
 
-            this._opponentSprite.events.onAnimationComplete.add(function(){
-                this._opponentSprite.animations.play('wait');
+            jagoSprite.events.onAnimationComplete.add(function(){
+                jagoSprite.animations.play('wait');
             }, this);
+
+            if(this.network.isHost) {
+                this._playerSprite = wulfSprite;
+                this._opponentSprite = jagoSprite;
+            } else {
+                this._playerSprite = jagoSprite;
+                this._opponentSprite = wulfSprite;
+            }
 
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
-            this._playerSprite.play('wait');
-            this._opponentSprite.play('wait');
+            wulfSprite.play('wait');
+            jagoSprite.play('wait');
         }
     }
 
