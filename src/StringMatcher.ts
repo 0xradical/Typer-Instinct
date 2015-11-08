@@ -26,11 +26,16 @@ class StringMatcher {
 
   currentCommandStrings: { [key: string]: string } = {};
   currentMatchLevels: { [key: string]: number } = {};
+  typingField: string;
 
   constructor() {
     for (let key of StringMatcher.ALLOWED_COMMANDS) {
       this.setupWord(key);
     }
+  }
+
+  updateTypingField(content: string) {
+    this.typingField = content;
   }
 
   getInputText(): string {
