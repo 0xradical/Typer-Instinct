@@ -408,7 +408,7 @@ module Fighting {
             player.animate(newState);
         }),
         block: new Command('block', (player) => {
-            let newState = setNewState(player, State.CROUCH);
+            let newState = setNewState(player, State.BLOCK);
             player.animate(newState);
         }),
         special: new Command('special', (player) => {
