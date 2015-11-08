@@ -10,6 +10,7 @@ module Network {
 
     conn: PeerJs.DataConnection;
     peer: PeerJs.Peer;
+    game: Game;
     lastSentTimestamp: number;
 
     constructor() {
@@ -53,7 +54,7 @@ module Network {
     sendState(playerState: any, globalState: any = null) {
       var msg = {
         controls: this.buffer,
-        playerState: null,
+        playerState: playerState,
         globalState: null
       }
 
@@ -64,6 +65,11 @@ module Network {
 
       this.sendData(msg);
       this.buffer.length = 0;
+    }
+
+    receiveState(data: any) {
+      let opponentState = data.opponentState;
+      this.game.loadOpponentState(data.playerState);
     }
 
     private sendData(data) {

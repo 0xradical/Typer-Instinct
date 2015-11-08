@@ -1,15 +1,16 @@
 /// <reference path="../lib/typings/core-js.d.ts" />
 /// <reference path="Utils.ts" />
+/// <reference path="StringMatcher.ts" />
 
 module Fighting {
     const NOOP = (..._) => { };
 
-    export interface StringMatcher {
-        updateTypingField(content: String);
-        currentCommandStrings: { [key: string]: string };
-        currentMatchLevels:    { [key: string]: number };
-
-    }
+    // export interface StringMatcher {
+    //     updateTypingField(content: String);
+    //     currentCommandStrings: { [key: string]: string };
+    //     currentMatchLevels:    { [key: string]: number };
+    //     typingField: string;
+    // }
     export interface DamageListener { (currentLife: number); }
     export interface DeathListener { (dead: Player); }
     export interface AnimateListener { (state: State, options?: any); }
