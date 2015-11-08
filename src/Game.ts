@@ -112,7 +112,7 @@ class Game {
             this.game.add.sprite(150, 0, 'background');
 
             this._groundSprite = this.game.add.sprite(150, 400, 'ground');
-            this._playerSprite = this.game.add.sprite(200, 50, 'sabrewulf');
+            this._playerSprite = this.game.add.sprite(200, 50, 'sabrewulf', '0000');
 
             this.game.physics.arcade.enable(this._playerSprite);
             this.game.physics.arcade.enable(this._groundSprite);
@@ -130,7 +130,23 @@ class Game {
             this._groundSprite.body.velocity.x = 0;
             this._groundSprite.body.velocity.y = 0;
 
-            this._playerSprite.animations.add('walk')
+            // add(name, frames, frameRate, loop, useNumericIndex)
+            this._playerSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 9, '', 2), 23, true, false);
+
+            // jump: 28000
+            this._playerSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
+
+            // crouch: 11000
+            this._playerSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 5, '', 3), 23, false, false);
+
+            // kick: 35000
+            this._playerSprite.animations.add('kick', Phaser.Animation.generateFrameNames('35', 0, 17, '', 3), 23, false, false);
+
+            // block: 192000
+            this._playerSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 6, '', 3), 23, false, false);
+
+            // special: 67000
+            this._playerSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
 
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
@@ -141,7 +157,7 @@ class Game {
     get update(): StateFunction {
         return () => {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
-            this._playerSprite.play('walk');
+            // this._playerSprite.play('special');
             this.player.tick();
             this.local.presenter.update();
             this.remote.presenter.update();
