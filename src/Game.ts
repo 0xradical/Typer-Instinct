@@ -152,7 +152,7 @@ class Game {
             //     opponentSpriteName, '0000');
 
             this.game.physics.arcade.enable(this._playerSprite);
-            this.game.physics.arcade.enable(this._opponentSprite);
+            // this.game.physics.arcade.enable(this._opponentSprite);
             this.game.physics.arcade.enable(this._groundSprite);
 
             this._playerSprite.body.gravity.y = 2000;
