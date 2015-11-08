@@ -146,9 +146,9 @@ class Game {
             this.game.add.sprite(150, 0, 'background');
 
             this._groundSprite = this.game.add.sprite(150, 400, 'ground');
-            this._playerSprite = this.game.add.sprite(WIDTH / 2 - 100, 50,
+            this._playerSprite = this.game.add.sprite(WIDTH / 2 - 190, 50,
                 playerSprintName, '0000');
-            this._opponentSprite = this.game.add.sprite(WIDTH / 2 + 100, 50,
+            this._opponentSprite = this.game.add.sprite(WIDTH / 2 + 40, 50,
                 opponentSpriteName, '0000');
 
             this.game.physics.arcade.enable(this._playerSprite);
