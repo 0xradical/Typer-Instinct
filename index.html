@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Wello!</title>
+  <script src="lib/peer.js"></script>
   <script src="lib/phaser.js"></script>
   <script src="lib/core.js"></script>
   <script src="build/game.js"></script>
@@ -10,62 +11,20 @@
 <body>
   <script type="text/javascript">
     window.onload = function() {
-      var ground;
-      var player;
-      var game = new Phaser.Game(512, 423, Phaser.AUTO, '', {
-        preload: preload, create: create, update: update, render: render
-      });
-
-      function preload () {
-        game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
-
-        game.load.spritesheet('background', 'assets/background.png');
-        game.load.spritesheet('ground', 'assets/ground.png');
-      }
-
-      function create () {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        game.add.sprite(0, 0, 'background');
-
-        ground = game.add.sprite(0, 200, 'ground');
-
-        player = game.add.sprite(50, 50, 'sabrewulf');
-
-        game.physics.arcade.enable(player);
-        game.physics.arcade.enable(ground);
-
-        player.body.gravity.y = 2000;
-        player.body.drag.x = 1700;
-
-        player.body.velocity.x = 0;
-        player.body.velocity.y = 0;
-
-        ground.enableBody = true;
-        ground.body.moves = false;
-        ground.body.immovable = true;
-        ground.allowGravity = false;
-        ground.body.gravity.x = 0;
-        ground.body.gravity.y = 0;
-        ground.body.velocity.x = 0;
-        ground.body.velocity.y = 0;
-
-        player.animations.add('walk');
-
-      }
-
-      function update() {
-        game.physics.arcade.collide(player, ground);
-
-        player.animations.play('walk', 10, true);
-        // game.physics.arcade.moveToXY(player, 10, 10);
-        StringPresenter.update(game);
-      }
-
-      function render(){
-        // game.debug.bodyInfo(ground, 0, 0);
-      }
+      window.blah = 'arst';
+      // setInterval(function() { window.blah = (new StringMatcher()).getRandomWord(); }, 1000);
+      window.matcher = new StringMatcher();
+      Game.run("Hueho");
     };
+
+  </script>
+  <div id='game-div'></div>
+  <input type='text' name='player-input' id='player-input' oninput='updateTypingField()'>
+  <script type="text/javascript">
+    function updateTypingField() {
+      // window.matcher.updateTypingField(document.getElementById('player-input').value);
+      // window.matcher.handleUserSubmission();
+    }
   </script>
 </body>
 </html>

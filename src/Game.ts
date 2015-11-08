@@ -62,7 +62,7 @@ class Game {
     get preload(): StateFunction {
         return () => {
             this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
-            this.game.load.spritesheet('ground', 'assets/ground2.png', 1024, 60);
+            this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 60);
             this.game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
@@ -100,8 +100,8 @@ class Game {
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.add.sprite(150, 0, 'background');
 
-            this._groundSprite = this.game.add.sprite(200, 360, 'ground');
-            this._playerSprite = this.game.add.sprite(650, 50, 'sabrewulf');
+            this._groundSprite = this.game.add.sprite(150, 400, 'ground');
+            this._playerSprite = this.game.add.sprite(200, 50, 'sabrewulf');
 
             this.game.physics.arcade.enable(this._playerSprite);
             this.game.physics.arcade.enable(this._groundSprite);
