@@ -183,7 +183,7 @@ class Game {
             this._opponentSprite.animations.add('jump', Phaser.Animation.generateFrameNames('13', 0, 32, '', 3), 23, false, false);
 
             // punch
-            this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
+            this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 15, false, false);
             this._opponentSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
 
             // crouch: 11000
@@ -195,7 +195,7 @@ class Game {
             this._opponentSprite.animations.add('kick', Phaser.Animation.generateFrameNames('17', 0, 19, '', 3), 23, false, false);
 
             // block: 192000
-            this._playerSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 6, '', 3), 23, false, false);
+            this._playerSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 6, '', 3), 10, false, false);
             this._opponentSprite.animations.add('block', Phaser.Animation.generateFrameNames('59', 0, 6, '', 3), 23, false, false);
 
             // special: 67000
