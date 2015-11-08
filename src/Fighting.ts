@@ -104,11 +104,18 @@ module Fighting {
 
     export class CommandMap {
         private validCommands: { [key: string]: AttachedCommand } = {};
+        private commandKeys: string[] = [];
 
-        add(command: Command) {
-            this.validCommands[command.name];
+        add(command: AttachedCommand) {
+            let key = command.name;
+            if (!this.validCommands[command.name]) {
+                this.validCommands[command.name] = command;
+                this.commandKeys.push(command.name)
+            }
             return this;
         }
+
+        get keys(): string[] { return this.commandKeys; }
 
         get(key: string): AttachedCommand {
             return this.validCommands[key];
@@ -146,7 +153,7 @@ module Fighting {
             }
         }
 
-        tick():number {
+        tick(): number {
             this._ticks -= 1;
             if (this._ticks <= 0) {
                 this.setState(State.STAND, TickState.RESET);
@@ -206,7 +213,7 @@ module Fighting {
                 return true;
             default:
                 return false;
-        } 
+        }
     }
 
     const STATE_TREE = {
@@ -351,7 +358,7 @@ module Fighting {
         },
     }
 
-    function setNewState(player: Player, nextState: State):State {
+    function setNewState(player: Player, nextState: State): State {
         let newState = followStateTree(player.state, nextState);
         if (!newState) {
             player.setState(nextState, TickState.RESET);

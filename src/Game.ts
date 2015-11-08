@@ -11,14 +11,13 @@ class Game {
     }
 
     player: Fighting.Player = null;
-    chain: Fighting.CommandChain = null;
     stringPresenter: StringPresenter = null;
 
-  game: Phaser.Game = null;
-  bmpText: Phaser.BitmapText = null;
-  lastKey: Phaser.Key = null;
+    game: Phaser.Game = null;
+    bmpText: Phaser.BitmapText = null;
 
     finished: boolean = false;
+    buffer: string[] = [];
 
     constructor(playerName: string) {
         this.player = new Fighting.Player(playerName, {
@@ -46,9 +45,20 @@ class Game {
             this.game.load.spritesheet('background', 'assets/background.png', 512, 223);
             this.game.load.spritesheet('ground', 'assets/ground.png', 512, 30);
             this.game.load.bitmapFont('mainFont', 'assets/font.png', 'assets/font.fnt');
+
+            this.game.input.keyboard.addCallbacks(null, null, (e: KeyboardEvent) => {
+                if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
+                    this.buffer.pop();
+                } else {
+                    this.buffer.push(String.fromCharCode(e.charCode));
+                    let match = false; // this.player.matcher.run(this.buffer.join(''));
+                    if (match) {
+                        this.buffer.length = 0;
+                    }
+                }
+            });
         };
     }
-  }
 
     get create(): StateFunction {
         return () => {
@@ -62,14 +72,13 @@ class Game {
             this.player.tick();
             this.stringPresenter.update();
         }
-      }
     }
-  }
 
     get render(): StateFunction {
         return () => {
             // game.debug.bodyInfo(ground, 0, 0);
         }
     }
-  }
 }
+
+
