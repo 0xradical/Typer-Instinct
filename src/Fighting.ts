@@ -46,6 +46,10 @@ module Fighting {
         }
 
         get name(): string { return this._name }
+
+        trigger(player: Player) {
+            this._action(player);
+        }
     }
 
     export class AttachedCommand extends Command {
@@ -53,8 +57,8 @@ module Fighting {
             super(_name, _action);
         }
 
-        trigger() {
-            this._action(this.player);
+        trigger(player: Player) {
+            // this._action(this.player);
         }
     }
 
@@ -73,7 +77,7 @@ module Fighting {
             let comboStart = 0;
 
             for (let i = 0; i < length; i++) {
-                this.commands[i].trigger();
+                this.commands[i].trigger(this.player);
 
                 let combo = Combo.find(this.commands.slice(comboStart, i))
                 if (combo != null) {
@@ -142,7 +146,7 @@ module Fighting {
             onDamage?: DamageListener, onDeath?: DeathListener,
             onAnimate?: AnimateListener
         }) {
-            this.matcher = new StringMatcher();
+            this.matcher = new StringMatcher(this);
             for (let key in Fighting.COMMANDS) {
                this.commandMap.add(Fighting.COMMANDS[key]);
             }
@@ -180,7 +184,7 @@ module Fighting {
 
         get animate(): AnimateListener { return this._onAnimate; }
 
-        execute(key: string) { this._commandMap.get(key).trigger() }
+        execute(key: string) { this._commandMap.get(key).trigger(this); }
         damageBy(percentage: number) { this._lifeBar.damageBy(percentage) }
     }
 

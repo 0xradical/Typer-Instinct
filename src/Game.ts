@@ -46,6 +46,14 @@ class Game {
                 this.finished = true;
             },
             onAnimate: (state) => {
+                console.log(state);
+
+                switch(state) {
+                    case 13: // special
+                        this._playerSprite.play('special');
+                    break;
+                    default:
+                }
             }
         });
         this.opponent = new Fighting.Player('Oponente', {

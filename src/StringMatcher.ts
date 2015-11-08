@@ -27,8 +27,11 @@ class StringMatcher {
   currentCommandStrings: { [key: string]: string } = {};
   currentMatchLevels: { [key: string]: number } = {};
   typingField: string;
+  player: Fighting.Player;
 
-  constructor() {
+  constructor(player: Fighting.Player) {
+    this.player = player;
+
     for (let key of StringMatcher.ALLOWED_COMMANDS) {
       this.setupWord(key);
     }
@@ -79,6 +82,7 @@ class StringMatcher {
 
   commandCompleted(command: string) {
     console.log('Command completed: ' + command);
+    this.player.execute(command);
   }
 
   matchLevels(partialStr: string): {[key: string]: number} {
