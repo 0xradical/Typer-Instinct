@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "core-js": "1.2.5",
-    "phaser": "2.4.4"
+    "phaser": "2.4.4",
+    "peerjs": "0.3.14"
   },
   "devDependencies": {
     "typescript": "1.6.2",
