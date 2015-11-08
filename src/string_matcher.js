@@ -4,7 +4,7 @@ var StringMatcher = {
       'punch',
       'kick',
       'jump',
-      'squat',
+      'crouch',
       'block',
       'special',
       'cancel'

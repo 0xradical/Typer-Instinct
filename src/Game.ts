@@ -7,7 +7,7 @@ interface StateFunction { (); }
 
 class PlayerState {
     constructor(
-        public player?: Fighting.Player, 
+        public player?: Fighting.Player,
         public presenter?: WordPresenter.Manager,
         public texts?: { [key: string]: Phaser.BitmapText },
         public bufferText: string = null) {}
