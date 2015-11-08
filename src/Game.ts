@@ -177,6 +177,7 @@ class Game {
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
             //this.remote = this.initRemote();
+            this._playerSprite.play('wait');
         }
     }
 
