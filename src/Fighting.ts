@@ -103,15 +103,15 @@ module Fighting {
     }
 
     export class CommandMap {
-        private validCommands: { [key: string]: Command } = {};
+        private validCommands: { [key: string]: AttachedCommand } = {};
 
         add(command: Command) {
             this.validCommands[command.name];
             return this;
         }
 
-        check(key: string): boolean {
-            return this.validCommands[key] != null;
+        get(key: string): AttachedCommand {
+            return this.validCommands[key];
         }
     }
 
@@ -156,7 +156,7 @@ module Fighting {
 
         animate(..._) { }
 
-        newChain(): CommandChain { return new CommandChain(this) }
+        execute(key: string) { this._commandMap.get(key).trigger() }
         damageBy(percentage: number) { this._lifeBar.damageBy(percentage) }
     }
 
