@@ -11,7 +11,7 @@ var StringMatcher = {
     ];
 
     window.NUM_COMMANDS = 7;
-    window.currentWords = {};
+    window.currentCommandStrings = {};
     window.currentMatchLevels = {};
     for(var i = 0; i < window.NUM_COMMANDS; ++i) {
       StringMatcher.setupWord(window.ALLOWED_COMMANDS[i]);
@@ -27,7 +27,7 @@ var StringMatcher = {
   },
 
   setupWord: function(index) {
-    window.currentWords[index] = StringMatcher.getRandomWord();;
+    window.currentCommandStrings[index] = StringMatcher.getRandomWord();;
     window.currentMatchLevels[index] = 0.0;
     StringMatcher.updateLabel(index);
   },
@@ -42,13 +42,13 @@ var StringMatcher = {
     var wordLabel = document.getElementById('word-' + index),
       wordMatchLevel = document.getElementById('match-level-' + index);
 
-    wordLabel.innerHTML = window.currentWords[index];
+    wordLabel.innerHTML = window.currentCommandStrings[index];
     wordMatchLevel.innerHTML = window.currentMatchLevels[index];
   },
 
   updateMatchLevelsFromInput: function() {
     var input = StringMatcher.getInputText(),
-      matchLevels = StringMatcher.matchLevels(window.currentWords, input);
+      matchLevels = StringMatcher.matchLevels(window.currentCommandStrings, input);
 
     for(var i = 0; i < window.NUM_COMMANDS; ++i) {
       var idx = window.ALLOWED_COMMANDS[i],
@@ -78,15 +78,14 @@ var StringMatcher = {
     console.log('Command completed: ' + command)
   },
 
-  matchLevels: function(currentWords, partialStr) {
+  matchLevels: function(currentCommandStrings, partialStr) {
     // returns match percentage (if 1.0, full match)
     var partialStrLength = partialStr.length,
-      currentWordsLength = currentWords.length,
       result = {};
 
-    for(var idx in currentWords) {
-      if(currentWords.hasOwnProperty(idx)) {
-        var candidate = currentWords[idx];
+    for(var idx in currentCommandStrings) {
+      if(currentCommandStrings.hasOwnProperty(idx)) {
+        var candidate = currentCommandStrings[idx];
         if(candidate.indexOf(partialStr) == 0) {
           result[idx] = partialStrLength / candidate.length;
         } else {

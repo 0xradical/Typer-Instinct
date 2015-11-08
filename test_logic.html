@@ -7,22 +7,38 @@
   <script src="lib/phaser.js"></script>
   <script src="lib/core.js"></script>
   <script src="build/game.js"></script>
-  <script src="src/string_matcher.js"></script>
-  <script src="src/words_db/words4.js"></script>
-  <script src="src/words_db/words5.js"></script>
-  <script src="src/words_db/words6.js"></script>
-  <script src="src/words_db/words3.js"></script>
-  <script src="src/words_db/words7.js"></script>
-  <script src="src/words_db/words8.js"></script>
 </head>
 <body>
   <script type="text/javascript">
     window.onload = function() {
       window.blah = 'arst';
-      setInterval(function() { window.blah = StringMatcher.getRandomWord(); }, 1000);
+      // setInterval(function() { window.blah = (new StringMatcher()).getRandomWord(); }, 1000);
       Game.run("Hueho");
     };
 
+  </script>
+  <div id='game-div'></div>
+  <table>
+    <tr></tr>
+  <tr><td>Punch: </td><td><span id='word-punch'></span></td><td><span id='match-level-punch'></span></td></tr>
+  <tr><td>Kick: </td><td><span id='word-kick'></span></td><td><span id='match-level-kick'></span></td></tr>
+  <tr><td>Jump: </td><td><span id='word-jump'></span></td><td><span id='match-level-jump'></span></td></tr>
+  <tr><td>Squat: </td><td><span id='word-squat'></span></td><td><span id='match-level-squat'></span></td></tr>
+  <tr><td>Block: </td><td><span id='word-block'></span></td><td><span id='match-level-block'></span></td></tr>
+  <tr><td>Special: </td><td><span id='word-special'></span></td><td><span id='match-level-special'></span></td></tr>
+  <tr><td>Cancel: </td><td><span id='word-cancel'></span></td><td><span id='match-level-cancel'></span></td></tr>
+  </table>
+  <input type='text' name='player-input' id='player-input' oninput='updateMatchLevelsFromInput()' onchange='handleUserSubmission()'>
+  <script type="text/javascript">
+    function updateMatchLevelsFromInput() {
+      var matcher = new StringMatcher();
+      matcher.updateMatchLevelsFromInput();
+    }
+
+    function handleUserSubmission() {
+      var matcher = new StringMatcher();
+      matcher.handleUserSubmission();
+    }
   </script>
 </body>
 </html>

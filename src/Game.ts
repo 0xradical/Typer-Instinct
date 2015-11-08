@@ -45,7 +45,7 @@ class Game {
            this.player.commandMap.add(Fighting.COMMANDS[key]);
         }
 
-        this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, '', {
+        this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
             update: this.update, render: this.render
         });

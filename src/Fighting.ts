@@ -6,7 +6,7 @@ module Fighting {
 
     export interface StringMatcher { 
         run(text: String); 
-        commandStrings: { [key: string]: string };
+        currentCommandStrings: { [key: string]: string };
     }
     export interface DamageListener { (currentLife: number); }
     export interface DeathListener { (dead: Player); }
