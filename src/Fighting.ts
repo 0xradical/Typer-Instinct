@@ -1,4 +1,4 @@
-/// <reference path="../lib/core-js.d.ts" />
+/// <reference path="../lib/typings/core-js.d.ts" />
 /// <reference path="Utils.ts" />
 
 module Fighting {

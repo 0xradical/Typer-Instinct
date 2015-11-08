@@ -1,5 +1,5 @@
-/// <reference path="../lib/core-js.d.ts" />
-/// <reference path="../lib/phaser.d.ts" />
+/// <reference path="../lib/typings/core-js.d.ts" />
+/// <reference path="../lib/typings/phaser.d.ts" />
 /// <reference path="Fighting.ts" />
 
 interface StateFunction { (); }
