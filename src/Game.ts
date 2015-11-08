@@ -97,10 +97,10 @@ class Game {
 
     get preload(): StateFunction {
         return () => {
-            this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
+            this.game.load.spritesheet('background', 'assets/background.png', 1024, 446);
             this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 60);
             this.game.load.atlasJSONHash('sabrewulf', 'assets/sabrewulf_trans.png', 'assets/sabrewulf.json');
-            // this.game.load.atlasJSONHash('jago', 'assets/jago_trans.png', 'assets/jago.json');
+            this.game.load.atlasJSONHash('jago', 'assets/jago_trans.png', 'assets/jago.json');
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
                 if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
@@ -148,11 +148,11 @@ class Game {
             this._groundSprite = this.game.add.sprite(150, 400, 'ground');
             this._playerSprite = this.game.add.sprite(WIDTH / 2 - 100, 50,
                 playerSprintName, '0000');
-            // this._opponentSprite = this.game.add.sprite(WIDTH / 2 + 100, 50,
-            //     opponentSpriteName, '0000');
+            this._opponentSprite = this.game.add.sprite(WIDTH / 2 + 100, 50,
+                opponentSpriteName, '0000');
 
             this.game.physics.arcade.enable(this._playerSprite);
-            // this.game.physics.arcade.enable(this._opponentSprite);
+            this.game.physics.arcade.enable(this._opponentSprite);
             this.game.physics.arcade.enable(this._groundSprite);
 
             this._playerSprite.body.gravity.y = 2000;
@@ -160,12 +160,12 @@ class Game {
             this._playerSprite.body.velocity.x = 0;
             this._playerSprite.body.velocity.y = 0;
 
-            // this._opponentSprite.body.gravity.y = 2000;
-            // this._opponentSprite.body.drag.x = 1700;
-            // this._opponentSprite.body.velocity.x = 0;
-            // this._opponentSprite.body.velocity.y = 0;
-            // this._opponentSprite.anchor.setTo(0.5, 1);
-            // this._opponentSprite.scale.x = -1;
+            this._opponentSprite.body.gravity.y = 2000;
+            this._opponentSprite.body.drag.x = 1700;
+            this._opponentSprite.body.velocity.x = 0;
+            this._opponentSprite.body.velocity.y = 0;
+            this._opponentSprite.anchor.setTo(0.5, 1);
+            this._opponentSprite.scale.x = -1;
 
             this._groundSprite.body.moves = false;
             this._groundSprite.body.immovable = true;
@@ -176,50 +176,51 @@ class Game {
 
             // add(name, frames, frameRate, loop, useNumericIndex)
             this._playerSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 9, '', 2), 23, true, false);
-            // this._opponentSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 10, '', 2), 23, true, false);
+            this._opponentSprite.animations.add('wait', Phaser.Animation.generateFrameNames('00', 0, 10, '', 2), 23, true, false);
 
             // jump: 28000
             this._playerSprite.animations.add('jump', Phaser.Animation.generateFrameNames('28', 0, 21, '', 3), 23, false, false);
-            // this._opponentSprite.animations.add('jump', Phaser.Animation.generateFrameNames('13', 0, 32, '', 3), 23, false, false);
+            this._opponentSprite.animations.add('jump', Phaser.Animation.generateFrameNames('13', 0, 32, '', 3), 23, false, false);
 
             // punch
             this._playerSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
-            // this._opponentSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
+            this._opponentSprite.animations.add('punch', Phaser.Animation.generateFrameNames('20', 0, 8, '', 2), 23, false, false);
 
             // crouch: 11000
             this._playerSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('11', 0, 5, '', 3), 23, false, false);
-            // this._opponentSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('10', 0, 10, '', 3), 23, false, false);
+            this._opponentSprite.animations.add('crouch', Phaser.Animation.generateFrameNames('10', 0, 10, '', 3), 23, false, false);
 
             // kick: 35000
             this._playerSprite.animations.add('kick', Phaser.Animation.generateFrameNames('35', 0, 17, '', 3), 23, false, false);
-            // this._opponentSprite.animations.add('kick', Phaser.Animation.generateFrameNames('17', 0, 19, '', 3), 23, false, false);
+            this._opponentSprite.animations.add('kick', Phaser.Animation.generateFrameNames('17', 0, 19, '', 3), 23, false, false);
 
             // block: 192000
             this._playerSprite.animations.add('block', Phaser.Animation.generateFrameNames('192', 0, 6, '', 3), 23, false, false);
-            // this._opponentSprite.animations.add('block', Phaser.Animation.generateFrameNames('59', 0, 6, '', 3), 23, false, false);
+            this._opponentSprite.animations.add('block', Phaser.Animation.generateFrameNames('59', 0, 6, '', 3), 23, false, false);
 
             // special: 67000
             this._playerSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
-            // this._opponentSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 16, '', 3), 23, false, false);
+            this._opponentSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 16, '', 3), 23, false, false);
 
             this._playerSprite.events.onAnimationComplete.add(function(){
                 this._playerSprite.animations.play('wait');
             }, this);
 
-            // this._opponentSprite.events.onAnimationComplete.add(function(){
-            //     this._opponentSprite.animations.play('wait');
-            // }, this);
+            this._opponentSprite.events.onAnimationComplete.add(function(){
+                this._opponentSprite.animations.play('wait');
+            }, this);
 
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
             this._playerSprite.play('wait');
-            // this._opponentSprite.play('wait');
+            this._opponentSprite.play('wait');
         }
     }
 
     get update(): StateFunction {
         return () => {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
+            this.game.physics.arcade.collide(this._opponentSprite, this._groundSprite);
             this.player.tick();
             this.sendToNetwork();
             this.local.presenter.update();
