@@ -50,10 +50,8 @@ module Network {
       if(!this.game) {
         console.log('NETWORK SEM GAME');
         this.game = window.game;
-        // return;
       }
       console.log(data);
-      let opponentState = data.opponentState;
       this.game.loadOpponentState(data.playerState);
     }
 

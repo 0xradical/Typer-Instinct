@@ -47,8 +47,9 @@ class StringMatcher {
   }
 
   updateTypingField(content: string) {
+    // console.log('updateTypingField recebeu:');
+    // console.log(content);
     this.typingField = content.toLowerCase();
-    // document.getElementById('player-input').value = content;
     return this.handleUserSubmission();
   }
 

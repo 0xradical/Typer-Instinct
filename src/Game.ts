@@ -47,7 +47,7 @@ class Game {
                 this.finished = true;
             },
             onAnimate: (state) => {
-                console.log("State: " + state);
+                // console.log("State: " + state);
 
                 switch(state) {
                     case Fighting.State.STAND:
@@ -92,8 +92,8 @@ class Game {
         // mister game, this is miss network
         this.network = network;
         this.network.game = this;
-        console.log('THERE SHOULD BE A GAME HERE:');
-        console.log(this.network.game);
+        // console.log('THERE SHOULD BE A GAME HERE:');
+        // console.log(this.network.game);
 
         this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
@@ -244,11 +244,14 @@ class Game {
     }
 
     loadOpponentState(state: any) {
-        console.log(state);
+        // console.log('LOAD OPPONENT STATE:')
+        // console.log(state);
         this.opponent.matcher.currentCommandStrings = state.currentCommandStrings;
         this.opponent.matcher.currentMatchLevels = state.currentMatchLevels;
-        // this.opponent.matcher.typingField = state.typingField;
         this.opponent.matcher.updateTypingField(state.typingField);
+        this.remote.texts['input'].setText(state.typingField);
+        // this.opponent.matcher.typingField = state.typingField;
+        // this.opponent.matcher.
     }
 
     private initLocal(player: Fighting.Player): PlayerState {
@@ -289,12 +292,12 @@ class Game {
         };
         for (let key in Fighting.COMMANDS) {
             texts[key] = this.game.add.text(WIDTH - 400, 20 + 40 * idx, '', style);
-            texts[key].strokeThickness = 16;
+            texts[key].strokeThickness = 10;
             labels[key] = this.game.add.text(WIDTH - 200, 20 + 40 * idx, key, style);
-            labels[key].strokeThickness = 16;
+            labels[key].strokeThickness = 10;
             idx++;
         }
-        texts['input'] = this.game.add.text(WIDTH - 10, 320, '', style);
+        texts['input'] = this.game.add.text(WIDTH - 400, 320, '', style);
         remote.texts = texts;
         remote.labels = labels;
 
