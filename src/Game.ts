@@ -10,20 +10,16 @@ class Game {
   }
 
   commandKeyMap: { [key: number]: Fighting.Command };
-  player: Fighting.Player;
+  player: Fighting.Player = null;
+  chain: Fighting.CommandChain = null;
 
-  game: Phaser.Game;
-  bmpText: Phaser.BitmapText;
+  game: Phaser.Game = null;
+  bmpText: Phaser.BitmapText = null;
   lastKey: Phaser.Key = null;
 
   finished: boolean = false;
 
   constructor(playerName: string) {
-    this.texts = {
-      player: "Bemvindo",
-      damage: "Nao se bata"
-    };
-
     this.commandKeyMap = {
       [Phaser.Keyboard.A]: new Fighting.Command("Soco", (player) => {
         player.opponent.damageBy(10);
@@ -82,7 +78,24 @@ class Game {
 
   get update(): StateFunction {
     return () => {
-      // this.bmpText.setText(this.texts.player);
+      if(this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
+        if(this.chain != null) {
+          this.chain.trigger();
+          this.chain = null;
+        }
+
+        return;
+      }
+
+      for (let key in this.commandKeyMap) {
+        if(this.game.input.keyboard.isDown(key)) {
+          if(this.chain == null) {
+            this.chain = this.player.newChain();
+          }
+
+          this.chain.push(this.commandKeyMap[key]);
+        }
+      }
     }
   }
 

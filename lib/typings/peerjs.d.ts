@@ -4,7 +4,7 @@
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 
-/// <reference path='../webrtc/RTCPeerConnection.d.ts' />
+/// <reference path='RTCPeerConnection.d.ts' />
 
 declare module PeerJs{
     interface PeerJSOption{

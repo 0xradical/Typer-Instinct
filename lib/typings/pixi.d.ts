@@ -1,1 +1,1 @@
-../node_modules/phaser/typescript/pixi.d.ts
+../../node_modules/phaser/typescript/pixi.d.ts

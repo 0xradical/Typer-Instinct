@@ -1,1 +1,1 @@
-../node_modules/phaser/typescript/phaser.d.ts
+../../node_modules/phaser/typescript/phaser.d.ts
