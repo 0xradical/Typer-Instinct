@@ -1,6 +1,7 @@
 /// <reference path="../lib/typings/core-js.d.ts" />
 /// <reference path="../lib/typings/phaser.d.ts" />
 /// <reference path="Fighting.ts" />
+/// <reference path="StringPresenter.ts" />
 
 interface StateFunction { (); }
 
@@ -11,10 +12,11 @@ class Game {
 
     player: Fighting.Player = null;
     chain: Fighting.CommandChain = null;
+    stringPresenter: StringPresenter = null;
 
-    game: Phaser.Game = null;
-    bmpText: Phaser.BitmapText = null;
-    lastKey: Phaser.Key = null;
+  game: Phaser.Game = null;
+  bmpText: Phaser.BitmapText = null;
+  lastKey: Phaser.Key = null;
 
     finished: boolean = false;
 
@@ -46,6 +48,7 @@ class Game {
             this.game.load.bitmapFont('mainFont', 'assets/font.png', 'assets/font.fnt');
         };
     }
+  }
 
     get create(): StateFunction {
         return () => {
@@ -57,12 +60,16 @@ class Game {
     get update(): StateFunction {
         return () => {
             this.player.tick();
+            this.stringPresenter.update();
         }
+      }
     }
+  }
 
     get render(): StateFunction {
         return () => {
             // game.debug.bodyInfo(ground, 0, 0);
         }
     }
+  }
 }

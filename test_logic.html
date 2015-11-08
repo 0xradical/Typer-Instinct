@@ -7,12 +7,22 @@
   <script src="lib/phaser.js"></script>
   <script src="lib/core.js"></script>
   <script src="build/game.js"></script>
+  <script src="src/string_matcher.js"></script>
+  <script src="src/words_db/words4.js"></script>
+  <script src="src/words_db/words5.js"></script>
+  <script src="src/words_db/words6.js"></script>
+  <script src="src/words_db/words3.js"></script>
+  <script src="src/words_db/words7.js"></script>
+  <script src="src/words_db/words8.js"></script>
 </head>
 <body>
   <script type="text/javascript">
     window.onload = function() {
+      window.blah = 'arst';
+      setInterval(function() { window.blah = StringMatcher.getRandomWord(); }, 1000);
       Game.run("Hueho");
     };
+
   </script>
 </body>
 </html>

@@ -12,7 +12,7 @@
     window.onload = function() {
       var ground;
       var player;
-      var game = new Phaser.Game(512, 223, Phaser.AUTO, '', {
+      var game = new Phaser.Game(512, 423, Phaser.AUTO, '', {
         preload: preload, create: create, update: update, render: render
       });
 
@@ -59,6 +59,7 @@
 
         player.animations.play('walk', 10, true);
         // game.physics.arcade.moveToXY(player, 10, 10);
+        StringPresenter.update(game);
       }
 
       function render(){
