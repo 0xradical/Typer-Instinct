@@ -19,23 +19,11 @@
 
   </script>
   <div id='game-div'></div>
-  <table>
-    <tr></tr>
-  <tr><td>Punch: </td><td><span id='word-punch'></span></td><td><span id='match-level-punch'></span></td></tr>
-  <tr><td>Kick: </td><td><span id='word-kick'></span></td><td><span id='match-level-kick'></span></td></tr>
-  <tr><td>Jump: </td><td><span id='word-jump'></span></td><td><span id='match-level-jump'></span></td></tr>
-  <tr><td>Squat: </td><td><span id='word-crouch'></span></td><td><span id='match-level-crouch'></span></td></tr>
-  <tr><td>Block: </td><td><span id='word-block'></span></td><td><span id='match-level-block'></span></td></tr>
-  <tr><td>Special: </td><td><span id='word-special'></span></td><td><span id='match-level-special'></span></td></tr>
-  </table>
-  <input type='text' name='player-input' id='player-input' oninput='updateMatchLevelsFromInput()' onchange='handleUserSubmission()'>
+  <input type='text' name='player-input' id='player-input' oninput='updateTypingField()'>
   <script type="text/javascript">
-    function updateMatchLevelsFromInput() {
-      window.matcher.updateMatchLevelsFromInput();
-    }
-
-    function handleUserSubmission() {
-      window.matcher.handleUserSubmission();
+    function updateTypingField() {
+      // window.matcher.updateTypingField(document.getElementById('player-input').value);
+      // window.matcher.handleUserSubmission();
     }
   </script>
 </body>

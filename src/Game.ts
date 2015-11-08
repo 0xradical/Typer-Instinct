@@ -58,8 +58,20 @@ class Game {
             this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 30);
             this.game.load.bitmapFont('mainFont', 'assets/font.png', 'assets/font.fnt');
 
+            this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
+                if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.buffer.pop();
+                    this.local.bufferText = this.buffer.join('');
+                    this.local.presenter.updateInput();
+                }
+            });
+
             this.game.input.keyboard.addCallbacks(null, null, null, (char: string, e: KeyboardEvent) => {
                 if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
+                    e.stopPropagation();
+                    e.preventDefault();
                     this.buffer.pop();
                     this.local.bufferText = this.buffer.join('');
                     this.local.presenter.updateInput();

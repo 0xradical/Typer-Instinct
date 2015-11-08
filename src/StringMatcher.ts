@@ -34,61 +34,47 @@ class StringMatcher {
     }
   }
 
-  updateTypingField(content: string) {
-    this.typingField = content;
-  }
-
-  getInputText(): string {
-    return document.getElementById('player-input').value;
-  }
-
-  setInputText(value: string) {
-    document.getElementById('player-input').value = value;
-  }
-
   setupWord(key: string) {
     this.currentCommandStrings[key] = this.getRandomWord();
     this.currentMatchLevels[key] = 0.0;
-    this.updateLabel(key);
   }
 
-  updateLabels() {
-    for (let key of StringMatcher.ALLOWED_COMMANDS) {
-      this.updateLabel(key);
-    }
+  updateTypingField(content: string) {
+    this.typingField = content.toLowerCase();
+    // document.getElementById('player-input').value = content;
+    return this.handleUserSubmission();
   }
 
-  updateLabel(key: string) {
-    let wordLabel = document.getElementById('word-' + key);
-    let wordMatchLabel = document.getElementById('match-level-' + key);
-
-    wordLabel.innerHTML = this.currentCommandStrings[key];
-    wordMatchLabel.innerHTML = this.currentMatchLevels[key].toString();
+  getInputText(): string {
+    return this.typingField;
   }
 
-  updateMatchLevelsFromInput() {
-    let input = this.getInputText();
-    let levels = this.matchLevels(input);
+  setInputText(value: string) {
+    // this.updateTypingField(value);
+    // this.typingField = value;
+    // console.log(this.getInputText());
+  }
+
+  handleUserSubmission(): boolean {
+    let input = this.getInputText(),
+      levels = this.matchLevels(input),
+      success = false;
 
     for (let key of StringMatcher.ALLOWED_COMMANDS) {
       let matchLevel = levels[key];
-      let matchLevelLabel = document.getElementById('match-level-' + key);
       this.currentMatchLevels[key] = matchLevel;
-    }
 
-    this.updateLabels();
-  }
-
-  handleUserSubmission() {
-    for (let key of StringMatcher.ALLOWED_COMMANDS) {
-      if (this.currentMatchLevels[key] == 1.0) {
+      if (matchLevel == 1.0) {
+        success = true;
         this.commandCompleted(key);
         this.setupWord(key);
+        this.setInputText('');
       }
     }
 
-    this.setInputText('');
-    this.updateMatchLevelsFromInput();
+    console.log(this.currentMatchLevels);
+
+    return success;
   }
 
   commandCompleted(command: string) {
@@ -96,19 +82,21 @@ class StringMatcher {
   }
 
   matchLevels(partialStr: string): {[key: string]: number} {
-  let partialStrLength = partialStr.length;
-  let result: {[key: string]: number} = {};
+    console.log('matchLevels');
+    console.log(partialStr);
+    let partialStrLength = partialStr.length,
+      result: {[key: string]: number} = {};
 
-  for(let key of StringMatcher.ALLOWED_COMMANDS) {
-    let candidate = this.currentCommandStrings[key];
-    if(candidate.indexOf(partialStr) == 0) {
-    result[key] = partialStrLength / candidate.length;
-    } else {
-    result[key] = 0.0;
+    for(let key of StringMatcher.ALLOWED_COMMANDS) {
+      let candidate = this.currentCommandStrings[key];
+      if(candidate.indexOf(partialStr) == 0) {
+      result[key] = partialStrLength / candidate.length;
+      } else {
+      result[key] = 0.0;
+      }
     }
-  }
 
-  return result;
+    return result;
   }
 
   getRandomWord(wordLength?): string {
@@ -127,9 +115,4 @@ class StringMatcher {
   randInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min;
   }
-
-  get commandStrings(): string[] {
-    return ['a'];
-  }
-
 }
