@@ -5,7 +5,7 @@ module Fighting {
     const NOOP = (..._) => { };
 
     export interface StringMatcher { 
-        run(text: String); 
+        updateTypingField(content: String); 
         currentCommandStrings: { [key: string]: string };
     }
     export interface DamageListener { (currentLife: number); }
@@ -146,11 +146,13 @@ module Fighting {
         get name(): string { return this._name; }
         get state(): State { return this._state; }
         get ticks(): number { return this._ticks; }
-        get matcher(): StringMatcher { return this._matcher; }
         get commandMap(): CommandMap { return this._commandMap; }
 
         get opponent(): Player { return this._opponent; }
         set opponent(opponent: Player) { this._opponent = opponent; }
+
+        get matcher(): StringMatcher { return this._matcher; }
+        set matcher(matcher: StringMatcher) { this._matcher = matcher; }
 
         setState(state: State, tickState: TickState) {
             this._state = state;

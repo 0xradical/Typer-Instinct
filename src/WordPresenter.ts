@@ -13,10 +13,10 @@ module WordPresenter {
 
         updateMenu() {
             let player = this.playerState.player;
-            // let toOutput: { [key: string]: string } = player.matcher.currentCommandStrings;
-            // for (let key in toOutput) {
-            //     this.playerState.texts[key].setText(toOutput[key]);
-            // }
+            let toOutput: { [key: string]: string } = player.matcher.currentCommandStrings;
+            for (let key in toOutput) {
+                this.playerState.texts[key].setText(toOutput[key]);
+            }
         }
 
         updateInput() {

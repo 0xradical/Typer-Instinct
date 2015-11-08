@@ -81,10 +81,10 @@ class StringMatcher {
 
   handleUserSubmission() {
     for (let key of StringMatcher.ALLOWED_COMMANDS) {
-    if (this.currentMatchLevels[key] == 1.0) {
-      this.commandCompleted(key);
-      this.setupWord(key);
-    }
+      if (this.currentMatchLevels[key] == 1.0) {
+        this.commandCompleted(key);
+        this.setupWord(key);
+      }
     }
 
     this.setInputText('');

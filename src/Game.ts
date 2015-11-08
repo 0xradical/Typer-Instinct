@@ -40,6 +40,7 @@ class Game {
                 this.finished = true;
             }
         });
+        this.player.matcher = new StringMatcher();
 
         for (let key in Fighting.COMMANDS) {
            this.player.commandMap.add(Fighting.COMMANDS[key]);
@@ -63,7 +64,7 @@ class Game {
                 } else {
                     this.buffer.push(String.fromCharCode(e.charCode));
                     this.local.bufferText = this.buffer.join('');
-                    let match = this.player.matcher.run(this.local.bufferText);
+                    let match = this.player.matcher.updateTypingField(this.local.bufferText);
                     if (match) {
                         this.buffer.length = 0;
                         this.local.bufferText = '';
