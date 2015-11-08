@@ -170,7 +170,7 @@ class Game {
 
     get create(): StateFunction {
         return () => {
-            let [playerSprintName, opponentSpriteName] = true ?
+            let [playerSprintName, opponentSpriteName] = this.network.isHost ?
                 ['sabrewulf', 'jago'] : ['jago', 'sabrewulf'];
 
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
