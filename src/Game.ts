@@ -18,14 +18,15 @@ const WIDTH = 1324;
 const HEIGHT = 466;
 
 class Game {
-    static run(playerName: string) {
-        return new Game(playerName);
+    static run(playerName: string, network: Network.Manager) {
+        return new Game(playerName, network);
     }
 
     player: Fighting.Player;
     opponent: Fighting.Player;
     local: PlayerState;
     remote: PlayerState;
+    network: Network.Manager;
 
     game: Phaser.Game = null;
 
@@ -36,7 +37,7 @@ class Game {
     private _groundSprite: Phaser.Sprite;
     private _opponentSprite: Phaser.Sprite;
 
-    constructor(playerName: string) {
+    constructor(playerName: string, network: Network.Manager) {
         this.player = new Fighting.Player(playerName, {
             onDamage: (value) => {
                 // noop
@@ -47,11 +48,16 @@ class Game {
             onAnimate: (state) => {
             }
         });
-        this.player.matcher = new StringMatcher();
-
-        for (let key in Fighting.COMMANDS) {
-           this.player.commandMap.add(Fighting.COMMANDS[key]);
-        }
+        this.opponent = new Fighting.Player('Oponente', {
+            onDamage: (value) => {
+                // noop
+            },
+            onDeath: (player) => {
+                this.finished = true;
+            },
+            onAnimate: (state) => {
+            }
+        });
 
         this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
@@ -82,7 +88,11 @@ class Game {
                     this.buffer.pop();
                     this.local.bufferText = this.buffer.join('');
                     this.local.presenter.updateInput();
-                } else if (e.keyCode !== Phaser.Keyboard.ENTER) {
+                } else if (e.keyCode !== Phaser.Keyboard.ENTER
+                    && e.keyCode !== Phaser.Keyboard.LEFT
+                    && e.keyCode !== Phaser.Keyboard.RIGHT
+                    && e.keyCode !== Phaser.Keyboard.UP
+                    && e.keyCode !== Phaser.Keyboard.DOWN) {
                     this.buffer.push(char);
                     this.local.bufferText = this.buffer.join('');
                     let match = this.player.matcher.updateTypingField(this.local.bufferText);
@@ -120,6 +130,7 @@ class Game {
             this._groundSprite.body.velocity.y = 0;
 
             this.local = this.initLocal(this.player);
+            this.remote = this.initRemote(this.opponent);
             //this.remote = this.initRemote();
         }
     }
@@ -129,7 +140,7 @@ class Game {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
             this.player.tick();
             this.local.presenter.update();
-            //this.remote.presenter.update();
+            this.remote.presenter.update();
         }
     }
 
@@ -162,21 +173,30 @@ class Game {
         return local;
     }
 
-    private initRemote(): PlayerState {
-        return null;
-        // let local = new PlayerState();
-        // local.player = player;
-        // local.presenter = this.initPresenter(local);
+    private initRemote(player: Fighting.Player): PlayerState {
+        let remote = new PlayerState();
+        remote.player = player;
+        remote.presenter = new WordPresenter.Manager(remote);
 
-        // let texts: { [key: string]: Phaser.BitmapText } = {}, idx = 0;
-        // for (let key in Fighting.COMMANDS) {
-        //     texts[key] = this.game.add.bitmapText(10, 20 + 20 * idx, 'Arial', '', 16);
-        //     idx++;
-        // }
-        // texts['input'] = this.game.add.bitmapText(10, 160, 'Arial', '', 16);
-        // local.texts = texts;
+        let texts: { [key: string]: Phaser.Text } = {};
+        let labels: { [key: string]: Phaser.Text } = {};
+        let idx = 0;
+        let style = {
+            font: "32px Courier New",
+            fill: "#ff0000"
+        };
+        for (let key in Fighting.COMMANDS) {
+            texts[key] = this.game.add.text(WIDTH - 400, 20 + 40 * idx, '', style);
+            texts[key].strokeThickness = 16;
+            labels[key] = this.game.add.text(WIDTH - 200, 20 + 40 * idx, key, style);
+            labels[key].strokeThickness = 16;
+            idx++;
+        }
+        texts['input'] = this.game.add.text(WIDTH - 10, 320, '', style);
+        remote.texts = texts;
+        remote.labels = labels;
 
-        // return local;
+        return remote;
     }
 }
 

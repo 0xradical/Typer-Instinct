@@ -142,6 +142,11 @@ module Fighting {
             onDamage?: DamageListener, onDeath?: DeathListener,
             onAnimate?: AnimateListener
         }) {
+            this.matcher = new StringMatcher();
+            for (let key in Fighting.COMMANDS) {
+               this.commandMap.add(Fighting.COMMANDS[key]);
+            }
+
             this._onAnimate = callbacks.onAnimate || NOOP;
             this._lifeBar = new LifeBar(this, callbacks.onDamage || NOOP,
                 callbacks.onDeath || NOOP);

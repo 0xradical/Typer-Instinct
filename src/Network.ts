@@ -12,8 +12,8 @@ module Network {
     peer: PeerJs.Peer;
     lastSentTimestamp: number;
 
-    onReceive: (any) = () => {};
-    onConnect: (any) = () => {};
+    // onReceive: (any) = () => {};
+    // onConnect: (any) = () => {};
 
     constructor() {
       this.peer = new Peer({
@@ -25,21 +25,28 @@ module Network {
       });
     }
 
-    client(hostKey) {
+    client(hostKey, callback) {
       this.conn = this.peer.connect(hostKey, {
         reliable: true
       });
 
       this.conn.on('data', this.onReceive);
+      callback();
     }
 
-    host() {
+    host(callback) {
       this.isHost = true;
 
       this.peer.on('connection', (conn) => {
-        this.onConnect();
+        this.conn = conn;
         this.conn.on('data', this.onReceive);
+        callback();
       });
+    }
+
+    onReceive(data: any) {
+        console.log(data);
+        // magic here
     }
 
     appendAction(action: any) {
