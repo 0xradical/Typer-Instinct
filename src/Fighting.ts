@@ -412,6 +412,7 @@ module Fighting {
             player.animate(newState);
         }),
         special: new Command('special', (player) => {
+            player.opponent.damageBy(20);
             player.setState(State.SPECIAL, TickState.RESET);
             player.animate(State.SPECIAL);
         })

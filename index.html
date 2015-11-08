@@ -11,20 +11,10 @@
 <body>
   <script type="text/javascript">
     window.onload = function() {
-      window.blah = 'arst';
-      // setInterval(function() { window.blah = (new StringMatcher()).getRandomWord(); }, 1000);
       window.matcher = new StringMatcher();
       Game.run("Hueho");
     };
 
-  </script>
-  <div id='game-div'></div>
-  <input type='text' name='player-input' id='player-input' oninput='updateTypingField()'>
-  <script type="text/javascript">
-    function updateTypingField() {
-      // window.matcher.updateTypingField(document.getElementById('player-input').value);
-      // window.matcher.handleUserSubmission();
-    }
   </script>
 </body>
 </html>
