@@ -87,6 +87,8 @@ class Game {
         });
         this.player.opponent = this.opponent;
 
+        this.network = network;
+
         this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
             update: this.update, render: this.render
@@ -186,6 +188,7 @@ class Game {
         return () => {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
             this.player.tick();
+            this.sendToNetwork();
             this.local.presenter.update();
             this.remote.presenter.update();
         }
@@ -244,6 +247,21 @@ class Game {
         remote.labels = labels;
 
         return remote;
+    }
+
+    private sendToNetwork() {
+        return;
+        if (!this.network) {
+            console.log('SEM NETWORK');
+            return;
+        }
+
+        let playerState = {
+            currentCommandStrings: {},
+            currentMatchLevels: {},
+            typingField: 'arst'
+        };
+        this.network.sendState(playerState);
     }
 }
 

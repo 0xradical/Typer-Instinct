@@ -12,9 +12,6 @@ module Network {
     peer: PeerJs.Peer;
     lastSentTimestamp: number;
 
-    // onReceive: (any) = () => {};
-    // onConnect: (any) = () => {};
-
     constructor() {
       this.peer = new Peer({
         key: API_KEY
@@ -53,16 +50,16 @@ module Network {
       this.buffer.push(action);
     }
 
-    sendControls(gameState: any = null) {
-      return;
+    sendState(playerState: any, globalState: any = null) {
       var msg = {
         controls: this.buffer,
-        state: null
+        playerState: null,
+        globalState: null
       }
 
-      if(this.isHost && gameState != null) {
+      if(this.isHost && globalState != null) {
         // if host, include game state info
-        msg.state = gameState;
+        msg.globalState = globalState;
       }
 
       this.sendData(msg);
