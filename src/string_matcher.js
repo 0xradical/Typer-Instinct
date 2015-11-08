@@ -18,6 +18,14 @@ var StringMatcher = {
     }
   },
 
+  getInputText: function() {
+    return document.getElementById('player-input').value;
+  },
+
+  setInputText: function(value) {
+    document.getElementById('player-input').value = value;
+  },
+
   setupWord: function(index) {
     window.currentWords[index] = StringMatcher.getRandomWord();;
     window.currentMatchLevels[index] = 0.0;
@@ -39,8 +47,8 @@ var StringMatcher = {
   },
 
   updateMatchLevelsFromInput: function() {
-    var elem = document.getElementById('player-input'),
-      matchLevels = StringMatcher.matchLevels(window.currentWords, elem.value);
+    var input = StringMatcher.getInputText(),
+      matchLevels = StringMatcher.matchLevels(window.currentWords, input);
 
     for(var i = 0; i < window.NUM_COMMANDS; ++i) {
       var idx = window.ALLOWED_COMMANDS[i],
@@ -50,9 +58,7 @@ var StringMatcher = {
       window.currentMatchLevels[idx] = matchLevel;
     }
 
-    // console.log(elem.value);
     StringMatcher.updateLabels();
-
   },
 
   handleUserSubmission: function() {
@@ -63,7 +69,8 @@ var StringMatcher = {
         StringMatcher.setupWord(idx);
       }
     }
-    document.getElementById('player-input').value = '';
+
+    StringMatcher.setInputText('');
     StringMatcher.updateMatchLevelsFromInput();
   },
 
