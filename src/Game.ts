@@ -82,7 +82,7 @@ class Game {
                     this.buffer.pop();
                     this.local.bufferText = this.buffer.join('');
                     this.local.presenter.updateInput();
-                } else {
+                } else if (e.keyCode !== Phaser.Keyboard.ENTER) {
                     this.buffer.push(char);
                     this.local.bufferText = this.buffer.join('');
                     let match = this.player.matcher.updateTypingField(this.local.bufferText);
