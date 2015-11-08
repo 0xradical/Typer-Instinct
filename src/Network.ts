@@ -54,6 +54,7 @@ module Network {
     }
 
     sendControls(gameState: any = null) {
+      return;
       var msg = {
         controls: this.buffer,
         state: null

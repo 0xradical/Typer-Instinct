@@ -74,6 +74,7 @@ class Game {
                 }
             }
         });
+
         this.opponent = new Fighting.Player('Oponente', {
             onDamage: (value) => {
                 // noop
@@ -84,6 +85,7 @@ class Game {
             onAnimate: (state) => {
             }
         });
+        this.player.opponent = this.opponent;
 
         this.game = new Phaser.Game(WIDTH, HEIGHT, Phaser.AUTO, 'game-div', {
             preload: this.preload, create: this.create,
