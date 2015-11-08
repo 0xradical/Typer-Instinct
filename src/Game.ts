@@ -114,6 +114,7 @@ class Game {
         });
 
         this.player.opponent = this.opponent;
+        this.opponent.opponent = this.player;
 
         // network, meet mister game
         // mister game, this is miss network
