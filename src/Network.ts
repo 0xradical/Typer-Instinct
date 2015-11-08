@@ -2,9 +2,9 @@
 /// <reference path="../lib/typings/peerjs.d.ts" />
 
 module Network {
-  export class Manager {
-    private static key = '3c8e8hl4a8xgvi';
+  const API_KEY = '3c8e8hl4a8xgvi';
 
+  export class Manager {
     buffer = [];
     isHost = false;
 
@@ -13,11 +13,11 @@ module Network {
     lastSentTimestamp: number;
 
     onReceive: (any) = () => {};
-    onConnect: (any) = () => { };
+    onConnect: (any) = () => {};
 
     constructor() {
       this.peer = new Peer({
-        key: Manager.key
+        key: API_KEY
       });
 
       this.peer.on('open', function(id) {
