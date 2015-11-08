@@ -9,7 +9,8 @@ class PlayerState {
     constructor(
         public player?: Fighting.Player,
         public presenter?: WordPresenter.Manager,
-        public texts?: { [key: string]: Phaser.BitmapText },
+        public texts?: { [key: string]: Phaser.Text },
+        public labels?: { [key: string]: Phaser.Text },
         public bufferText: string = null) {}
 }
 
@@ -56,7 +57,6 @@ class Game {
         return () => {
             this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
             this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 30);
-            this.game.load.bitmapFont('mainFont', 'assets/font.png', 'assets/font.fnt');
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
                 if (e.keyCode === Phaser.Keyboard.BACKSPACE) {
@@ -115,13 +115,20 @@ class Game {
         local.player = player;
         local.presenter = new WordPresenter.Manager(local);
 
-        let texts: { [key: string]: Phaser.BitmapText } = {}, idx = 0;
+        let texts: { [key: string]: Phaser.Text } = {};
+        let labels: { [key: string]: Phaser.Text } = {};
+        let idx = 0;
+        let style = { font: "32px Courier New", fill: "#ff0000" };
         for (let key in Fighting.COMMANDS) {
-            texts[key] = this.game.add.bitmapText(10, 20 + 20 * idx, 'mainFont', '', 20);
+            texts[key] = this.game.add.text(200, 20 + 40 * idx, '', style);
+            texts[key].strokeThickness = 16;
+            labels[key] =this.game.add.text(10, 20 + 40 * idx, key, style);
+            labels[key].strokeThickness = 16;
             idx++;
         }
-        texts['input'] = this.game.add.bitmapText(10, 160, 'mainFont', '', 20);
+        texts['input'] = this.game.add.text(10, 320, '', style);
         local.texts = texts;
+        local.labels = labels;
 
         return local;
     }
@@ -134,10 +141,10 @@ class Game {
 
         // let texts: { [key: string]: Phaser.BitmapText } = {}, idx = 0;
         // for (let key in Fighting.COMMANDS) {
-        //     texts[key] = this.game.add.bitmapText(10, 20 + 20 * idx, 'mainFont', '', 16);
+        //     texts[key] = this.game.add.bitmapText(10, 20 + 20 * idx, 'Arial', '', 16);
         //     idx++;
         // }
-        // texts['input'] = this.game.add.bitmapText(10, 160, 'mainFont', '', 16);
+        // texts['input'] = this.game.add.bitmapText(10, 160, 'Arial', '', 16);
         // local.texts = texts;
 
         // return local;
