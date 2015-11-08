@@ -46,9 +46,11 @@ class Game {
                 this.finished = true;
             },
             onAnimate: (state) => {
-                console.log(state);
+                console.log("State: " + state);
 
                 switch(state) {
+                    case 11: // block
+                        this._playerSprite.play('block');
                     case 13: // special
                         this._playerSprite.play('special');
                     break;
