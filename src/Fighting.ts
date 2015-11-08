@@ -2,16 +2,18 @@
 /// <reference path="Utils.ts" />
 
 module Fighting {
+    const NOOP = (..._) => { };
 
-    interface DamageListener { (number); }
-    interface DeathListener { (Player); }
+    export interface DamageListener { (currentLife: number); }
+    export interface DeathListener { (dead: Player); }
 
-    class LifeBar {
+    export class LifeBar {
         private percentage: number = 100;
+        private player: Player;
         private onDamage: DamageListener;
         private onDeath: DeathListener;
 
-        constructor(onDamage: DamageListener, onDeath: DeathListener) {
+        constructor(player: Player, onDamage: DamageListener, onDeath: DeathListener) {
             this.onDamage = onDamage;
             this.onDeath = onDeath;
         }
@@ -24,15 +26,15 @@ module Fighting {
             if (this.alive) {
                 this.onDamage(this.percentage);
             } else {
-                this.onDeath(this);
+                this.onDeath(this.player);
             }
         }
     }
 
-    interface CommandAction { (Player) };
+    export interface CommandAction { (player: Player); };
 
-    class Command {
-        constructor(protected _name: string, protected _action: CommandAction = (_) => { }) { }
+    export class Command {
+        constructor(protected _name: string, protected _action: CommandAction = NOOP) { }
 
         attachTo(player: Player): AttachedCommand {
             return new AttachedCommand(this._name, this._action, player);
@@ -41,7 +43,7 @@ module Fighting {
         get name(): string { return this._name }
     }
 
-    class AttachedCommand extends Command {
+    export class AttachedCommand extends Command {
         constructor(_name: string, _action: CommandAction, private player: Player) {
             super(_name, _action);
         }
@@ -51,7 +53,7 @@ module Fighting {
         }
     }
 
-    class CommandChain {
+    export class CommandChain {
         private commands: AttachedCommand[] = [];
 
         constructor(private player: Player) { }
@@ -77,7 +79,7 @@ module Fighting {
         }
     }
 
-    class Combo {
+    export class Combo {
         private static combos: { [key: string]: Combo } = {};
 
         static find(commands: Command[]): Combo {
@@ -100,7 +102,7 @@ module Fighting {
         }
     }
 
-    class CommandMap {
+    export class CommandMap {
         private validCommands: { [key: string]: Command } = {};
 
         add(command: Command) {
@@ -114,15 +116,25 @@ module Fighting {
     }
 
     // Interaction between commands
-    class Player {
+    export class Player {
         private _opponent: Player;
-        private _commandMap: CommandMap;
+        private _commandMap: CommandMap = new CommandMap();
+        private _lifeBar: LifeBar;
 
-        constructor(private _name: string) { }
+        constructor(private _name: string, callbacks?: {
+            onDamage?: DamageListener, onDeath?: DeathListener
+        }) {
+            this._lifeBar = new LifeBar(this, callbacks.onDamage || NOOP,
+                callbacks.onDeath || NOOP);
+        }
 
+        get name(): string { return this._name; }
         get commandMap(): CommandMap { return this._commandMap; }
-        set opponent(opponent: Player) { this.opponent = opponent; }
+
+        get opponent(): Player { return this._opponent; }
+        set opponent(opponent: Player) { this._opponent = opponent; }
 
         newChain(): CommandChain { return new CommandChain(this) }
+        damageBy(percentage: number) { this._lifeBar.damageBy(percentage) }
     }
 }
