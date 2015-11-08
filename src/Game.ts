@@ -201,6 +201,14 @@ class Game {
             this._playerSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
             this._opponentSprite.animations.add('special', Phaser.Animation.generateFrameNames('67', 0, 31, '', 3), 23, false, false);
 
+            this._playerSprite.events.onAnimationComplete.add(function(){
+                this._playerSprite.animations.play('wait');
+            }, this);
+
+            this._opponentSprite.events.onAnimationComplete.add(function(){
+                this._opponentSprite.animations.play('wait');
+            }, this);
+
             this.local = this.initLocal(this.player);
             this.remote = this.initRemote(this.opponent);
             this._playerSprite.play('wait');
