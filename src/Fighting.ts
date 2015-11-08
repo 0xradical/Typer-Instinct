@@ -178,6 +178,7 @@ module Fighting {
             this._ticks -= 1;
             if (this._ticks <= 0) {
                 this.setState(State.STAND, TickState.RESET);
+                this.animate(State.STAND);
             }
             return this._ticks;
         }

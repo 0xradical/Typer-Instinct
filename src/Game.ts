@@ -49,11 +49,27 @@ class Game {
                 console.log("State: " + state);
 
                 switch(state) {
-                    case 11: // block
+                    case Fighting.State.STAND:
+                        this._playerSprite.play('wait');
+                        break;
+                    case Fighting.State.PUNCH:
+                        this._playerSprite.play('punch');
+                        break;
+                    case Fighting.State.CROUCH:
+                        this._playerSprite.play('crouch');
+                        break;
+                    case Fighting.State.KICK:
+                        this._playerSprite.play('kick');
+                        break;
+                    case Fighting.State.JUMP:
+                        this._playerSprite.play('jump');
+                        break;
+                    case Fighting.State.BLOCK:
                         this._playerSprite.play('block');
-                    case 13: // special
+                        break;
+                    case Fighting.State.SPECIAL:
                         this._playerSprite.play('special');
-                    break;
+                        break;
                     default:
                 }
             }
@@ -167,7 +183,6 @@ class Game {
     get update(): StateFunction {
         return () => {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
-            // this._playerSprite.play('special');
             this.player.tick();
             this.local.presenter.update();
             this.remote.presenter.update();
