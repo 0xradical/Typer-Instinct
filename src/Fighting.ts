@@ -7,6 +7,8 @@ module Fighting {
     export interface StringMatcher {
         updateTypingField(content: String);
         currentCommandStrings: { [key: string]: string };
+        currentMatchLevels:    { [key: string]: number };
+
     }
     export interface DamageListener { (currentLife: number); }
     export interface DeathListener { (dead: Player); }

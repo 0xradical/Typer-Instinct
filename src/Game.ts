@@ -104,6 +104,7 @@ class Game {
                     e.preventDefault();
                     this.buffer.pop();
                     this.local.bufferText = this.buffer.join('');
+                    this.player.matcher.updateTypingField(this.local.bufferText);
                     this.local.presenter.updateInput();
                 }
             });
@@ -206,12 +207,13 @@ class Game {
         let style = { font: "32px Courier New", fill: "#ff0000" };
         for (let key in Fighting.COMMANDS) {
             texts[key] = this.game.add.text(200, 20 + 40 * idx, '', style);
-            texts[key].strokeThickness = 16;
+            texts[key].strokeThickness = 10;
             labels[key] =this.game.add.text(10, 20 + 40 * idx, key, style);
-            labels[key].strokeThickness = 16;
+            labels[key].strokeThickness = 10;
             idx++;
         }
-        texts['input'] = this.game.add.text(10, 320, '', style);
+        let inputStyle = { font: "32px Courier New", fill: "#00ff00" };
+        texts['input'] = this.game.add.text(10, 320, '', inputStyle);
         local.texts = texts;
         local.labels = labels;
 
