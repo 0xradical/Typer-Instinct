@@ -146,6 +146,14 @@ module Fighting {
             }
         }
 
+        tick():number {
+            this._ticks -= 1;
+            if (this._ticks <= 0) {
+                this.setState(State.STAND, TickState.RESET);
+            }
+            return this._ticks;
+        }
+
         animate(..._) { }
 
         newChain(): CommandChain { return new CommandChain(this) }
@@ -162,26 +170,61 @@ module Fighting {
         KICK, KICK_AIR, KICK_GROUND, // Kicking states
         PUNCH, PUNCH_AIR, PUNCH_GROUND, // Punching states
         STAND, JUMP, CROUCH, // Movement states
-        CANCEL, SPECIAL, // Special states
-        CONTINUE // Do not alter ticks
+        CANCEL, SPECIAL // Special states
     }
 
-    export const STATE_TREE = {
+    function isAir(state: State) {
+        switch (state) {
+            case State.JUMP: case State.PUNCH_AIR: case State.KICK_AIR: case State.BLOCK_AIR:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function isNeutral(state: State) {
+        switch (state) {
+            case State.STAND: case State.PUNCH: case State.KICK: case State.BLOCK:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function isGround(state: State) {
+        switch (state) {
+            case State.CROUCH: case State.PUNCH_GROUND: case State.KICK_GROUND: case State.BLOCK_GROUND:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function isBlock(state: State) {
+        switch (state) {
+            case State.BLOCK: case State.BLOCK_AIR: case State.BLOCK_GROUND:
+                return true;
+            default:
+                return false;
+        } 
+    }
+
+    const STATE_TREE = {
         [State.JUMP]: {
-            [State.JUMP]: State.CONTINUE,
+            [State.JUMP]: State.JUMP,
             [State.BLOCK]: State.BLOCK_AIR,
             [State.PUNCH]: State.PUNCH_AIR,
             [State.KICK]: State.KICK_AIR,
         },
         [State.CROUCH]: {
-            [State.CROUCH]: State.CONTINUE,
+            [State.CROUCH]: State.CROUCH,
             [State.BLOCK]: State.BLOCK_GROUND,
             [State.PUNCH]: State.PUNCH_GROUND,
             [State.KICK]: State.KICK_GROUND
         }
     }
 
-    export function followStateTree(current: State, next: State): State {
+    function followStateTree(current: State, next: State): State {
         let subtree = STATE_TREE[current];
         if (!subtree) return next;
 
@@ -194,21 +237,17 @@ module Fighting {
     const SUB_COMMANDS = {
         [State.PUNCH]: (player: Player) => {
             let opponent = player.opponent;
+            let opponentState = opponent.state;
             let blocked = false, hit = false;
 
-            switch (opponent.state) {
-                case State.BLOCK:
-                case State.BLOCK_AIR:
-                    hit = true;
-                    blocked = true;
+            if (isNeutral(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
                     opponent.damageBy(2);
-                    break;
-                case State.BLOCK_GROUND:
-                case State.CROUCH:
-                    break; // do nothing
-                default:
-                    hit = true;
+                } else {
                     opponent.damageBy(5);
+                }
             }
 
             player.animate(State.PUNCH, {
@@ -217,89 +256,136 @@ module Fighting {
         },
         [State.PUNCH_AIR]: (player: Player) => {
             let opponent = player.opponent;
+            let opponentState = opponent.state;
             let blocked = false, hit = false;
 
-            switch (opponent.state) {
-                case State.BLOCK_AIR:
-                    hit = true;
-                    blocked = true;
-                    opponent.damageBy(2);
-                    break;
-                case State.JUMP:
-                    hit = true;
+            if (isAir(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
+                    opponent.damageBy(3);
+                } else {
                     opponent.damageBy(7);
-                default:
-                    break; // do nothing
+                }
             }
 
-            player.animate(State.PUNCH, {
+            player.animate(State.PUNCH_AIR, {
                 blocked: blocked, hit: hit
             });
         },
         [State.PUNCH_GROUND]: (player: Player) => {
             let opponent = player.opponent;
+            let opponentState = opponent.state;
             let blocked = false, hit = false;
 
-            switch (opponent.state) {
-                case State.BLOCK:
-                case State.BLOCK_GROUND:
-                    hit = true;
-                    blocked = true;
-                    opponent.damageBy(2);
-                    break;
-                case State.BLOCK_AIR:
-                case State.JUMP:
-                    break; // do nothing
-                default:
-                    hit = true;
+            if (isGround(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
+                    opponent.damageBy(1);
+                } else {
                     opponent.damageBy(4);
+                }
             }
 
-            player.animate(State.PUNCH, {
+            player.animate(State.PUNCH_GROUND, {
+                blocked: blocked, hit: hit
+            });
+        },
+        [State.KICK]: (player: Player) => {
+            let opponent = player.opponent;
+            let opponentState = opponent.state;
+            let blocked = false, hit = false;
+
+            if (isGround(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
+                    opponent.damageBy(1);
+                } else {
+                    opponent.damageBy(4);
+                }
+            }
+
+            player.animate(State.KICK, {
+                blocked: blocked, hit: hit
+            });
+        },
+        [State.KICK_AIR]: (player: Player) => {
+            let opponent = player.opponent;
+            let opponentState = opponent.state;
+            let blocked = false, hit = false;
+
+            if (isNeutral(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
+                    opponent.damageBy(2);
+                } else {
+                    opponent.damageBy(5);
+                }
+            }
+
+            player.animate(State.KICK_AIR, {
+                blocked: blocked, hit: hit
+            });
+        },
+        [State.KICK_GROUND]: (player: Player) => {
+            let opponent = player.opponent;
+            let opponentState = opponent.state;
+            let blocked = false, hit = false;
+
+            if (isGround(opponentState)) {
+                hit = true;
+                if (isBlock(opponentState)) {
+                    blocked = true
+                    opponent.damageBy(3);
+                } else {
+                    opponent.damageBy(7);
+                }
+            }
+
+            player.animate(State.KICK_GROUND, {
                 blocked: blocked, hit: hit
             });
         },
     }
 
+    function setNewState(player: Player, nextState: State):State {
+        let newState = followStateTree(player.state, nextState);
+        if (!newState) {
+            player.setState(nextState, TickState.RESET);
+            return nextState;
+        } else {
+            player.setState(newState, TickState.KEEP);
+            return newState;
+        }
+    }
+
     export const COMMANDS = {
         punch: new Command('punch', (player) => {
-            player.state = followStateTree(player.state, State.PUNCH);
-
+            let newState = setNewState(player, State.PUNCH);
+            SUB_COMMANDS[newState](player);
         }),
         kick: new Command('kick', (player) => {
-            player.state = State.KICK;
-
-            let opponent = player.opponent;
-            player.animate(State.KICK, {
-                blocked: opponent.state == State.BLOCK
-            });
-
-            switch (opponent.state) {
-                case State.BLOCK:
-                case State.BLOCK_GROUND:
-                    opponent.damageBy(2);
-                    break;
-                case State.BLOCK_AIR:
-                case State.JUMP:
-                    break; // do nothing
-                default:
-                    opponent.damageBy(5);
-            }
+            let newState = setNewState(player, State.KICK);
+            SUB_COMMANDS[newState](player);
         }),
         jump: new Command('jump', (player) => {
-
+            let newState = setNewState(player, State.JUMP);
+            player.animate(newState);
         }),
         crouch: new Command('crouch', (player) => {
-
+            let newState = setNewState(player, State.CROUCH);
+            player.animate(newState);
         }),
         block: new Command('block', (player) => {
-
-        }),
-        cancel: new Command('cancel', (player) => {
-
+            let newState = setNewState(player, State.CROUCH);
+            player.animate(newState);
         }),
         special: new Command('special', (player) => {
-
+            player.setState(State.SPECIAL, TickState.RESET);
+            player.animate(State.SPECIAL);
         })
-    ]
+    }
 }
