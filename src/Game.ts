@@ -63,8 +63,7 @@ class Game {
         return () => {
             this.game.load.spritesheet('background', 'assets/background.png', 1024, 466);
             this.game.load.spritesheet('ground', 'assets/ground.png', 1024, 60);
-            this.game.load.atlas('sabrewulf', 'assets/sabrewulf_trans.png', 'assets/sabrewulf.json', Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
-            // this.game.load.atlasJSONHash('sabrewulf', 'assets/sabrewulf.png', 'assets/sabrewulf.json');
+            this.game.load.atlasJSONHash('sabrewulf', 'assets/sabrewulf_trans.png', 'assets/sabrewulf.json');
             // this.game.load.spritesheet('sabrewulf', 'assets/sabrewulf.png', 120, 100);
 
             this.game.input.keyboard.addCallbacks(null, (e: KeyboardEvent) => {
@@ -121,6 +120,8 @@ class Game {
             this._groundSprite.body.velocity.x = 0;
             this._groundSprite.body.velocity.y = 0;
 
+            this._playerSprite.animations.add('walk')
+
             this.local = this.initLocal(this.player);
             //this.remote = this.initRemote();
         }
@@ -129,6 +130,7 @@ class Game {
     get update(): StateFunction {
         return () => {
             this.game.physics.arcade.collide(this._playerSprite, this._groundSprite);
+            this._playerSprite.play('walk');
             this.player.tick();
             this.local.presenter.update();
             //this.remote.presenter.update();
